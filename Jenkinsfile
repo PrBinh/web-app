@@ -1,42 +1,26 @@
 pipeline {
    agent any
-   environment {
-       registry = "magalixcorp/k8scicd"
-       GOCACHE = "/tmp"
-   }
    stages {
        stage('Build') {
            agent {
                docker {
-                   image 'golang'
+                   image 'python'
                }
            }
            steps {
-               // Create our project directory.
-               sh 'cd ${GOPATH}/src'
-               sh 'mkdir -p ${GOPATH}/src/hello-world'
-               // Copy all files in our Jenkins workspace to our project directory.               
-               sh 'cp -r ${WORKSPACE}/* ${GOPATH}/src/hello-world'
-               // Build the app.
-               sh 'go build'              
+               // Build docker image file
+               sh 'docker build -f Dockerfile -t hello-python:latest'          
            }    
        }
        stage('Test') {
            agent {
                docker {
-                   image 'golang'
+                   image 'python'
                }
            }
            steps {                
-               // Create our project directory.
-               sh 'cd ${GOPATH}/src'
-               sh 'mkdir -p ${GOPATH}/src/hello-world'
-               // Copy all files in our Jenkins workspace to our project directory.               
-               sh 'cp -r ${WORKSPACE}/* ${GOPATH}/src/hello-world'
-               // Remove cached test results.
-               sh 'go clean -cache'
-               // Run Unit Tests.
-               sh 'go test ./... -v -short'           
+               // Run docker with image
+               sh 'docker run -p 5001:5000 hello-python'
            }
        }
        stage('Publish') {
