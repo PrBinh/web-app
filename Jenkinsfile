@@ -6,6 +6,7 @@ pipeline {
                docker {
                    image 'python:3.6'
                }
+	   }
            steps {
 		// install requirements package
 		sh 'pip install -r requirements.txt'
@@ -19,6 +20,7 @@ pipeline {
                docker {
                    image 'python:3.6'
                }
+	   }
            steps {                
                // Run docker with image
                sh 'docker run -p 5001:5000 hello-python'
