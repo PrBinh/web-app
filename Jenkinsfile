@@ -9,7 +9,7 @@ pipeline {
 	   }
            steps {
 		// chown to user Jenkins
-		sh 'sudo chown -R jenkins:jenkins ${WORKSPACE}'
+		sh 'chown -R jenkins:jenkins ${WORKSPACE}'
 		// install requirements package
 		sh 'pip3 install Flask'
 		sh 'python main.py'
