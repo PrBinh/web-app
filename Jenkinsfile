@@ -9,6 +9,8 @@ pipeline {
 	   }
            steps {
 		// install requirements package
+		sh 'virtualenv enviroment_name -p python3'
+		sh 'source enviroment_name/bin/activate'
 		sh 'pip3 install -r ./app/requirements.txt'
 		sh 'python main.py'
                // Build docker image file
