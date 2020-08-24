@@ -8,7 +8,6 @@ pipeline {
        stage('Build') {
            agent {
                docker {
-                   dockerfile true
                    image 'golang'
                }
            }
@@ -25,7 +24,6 @@ pipeline {
        stage('Test') {
            agent {
                docker {
-                   dockerfile true
                    image 'golang'
                }
            }
