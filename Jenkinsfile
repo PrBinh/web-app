@@ -9,10 +9,10 @@ pipeline {
 	   }
            steps {
 		// install requirements package
-		sh 'pip install -r requirements.txt'
+		sh 'pip install -r ./app/requirements.txt'
 		sh 'python main.py'
                // Build docker image file
-               sh 'docker build -f Dockerfile -t hello-python:latest .'          
+               sh 'docker build -f ./docker/Dockerfile -t hello-python:latest .'          
            }    
        }
        stage('Test') {
