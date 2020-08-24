@@ -10,7 +10,7 @@ pipeline {
            steps {
 		// install requirements package
 		sh 'pip3 install Flask'
-		sh 'python main.py'
+		sh 'python ./app/main.py'
                // Build docker image file
                sh 'docker build -f ./docker/Dockerfile -t hello-python:latest .'          
            }    
