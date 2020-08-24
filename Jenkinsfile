@@ -2,22 +2,17 @@ pipeline {
    agent any
    stages {
        stage('Build') {
-           agent {
-               docker {
-                   image 'python'
-               }
-           }
+           agent any
            steps {
+				// install requirements package
+			   sh 'pip install -r requirements.txt'
+			   sh 'python main.py'
                // Build docker image file
-               sh 'docker build -f Dockerfile -t hello-python:latest'          
+               sh 'docker build -f Dockerfile -t hello-python:latest .'          
            }    
        }
        stage('Test') {
-           agent {
-               docker {
-                   image 'python'
-               }
-           }
+           agent any
            steps {                
                // Run docker with image
                sh 'docker run -p 5001:5000 hello-python'
