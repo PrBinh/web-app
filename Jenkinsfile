@@ -9,9 +9,7 @@ pipeline {
 	   }
            steps {
 		// install requirements package
-		sh 'pip3 install virtualenv'
-		sh 'virtualenv -p /usr/bin/python3 virtualenv_name'
-		sh 'pip3 install -r ./app/requirements.txt'
+		sh 'sudo pip3 install -r ./app/requirements.txt'
 		sh 'python main.py'
                // Build docker image file
                sh 'docker build -f ./docker/Dockerfile -t hello-python:latest .'          
