@@ -1,8 +1,17 @@
 pipeline {
    agent any
+   environment {
+       registry = "magalixcorp/k8scicd"
+       GOCACHE = "/tmp"
+   }
    stages {
        stage('Build') {
-           agent { docker { image 'golang' } }
+           agent {
+               docker {
+                   dockerfile true
+                   image 'golang'
+               }
+           }
            steps {
                // Create our project directory.
                sh 'cd ${GOPATH}/src'
@@ -14,7 +23,12 @@ pipeline {
            }    
        }
        stage('Test') {
-           agent { docker { image 'golang' } }
+           agent {
+               docker {
+                   dockerfile true
+                   image 'golang'
+               }
+           }
            steps {                
                // Create our project directory.
                sh 'cd ${GOPATH}/src'
@@ -51,4 +65,3 @@ pipeline {
        }
    }
 }
-
