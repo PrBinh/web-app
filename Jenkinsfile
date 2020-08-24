@@ -9,7 +9,7 @@ pipeline {
 	   }
            steps {
 		// install requirements package
-		sh 'sudo pip3 install -r ./app/requirements.txt'
+		sh 'pip3 install -r ./app/requirements.txt --user'
 		sh 'python main.py'
                // Build docker image file
                sh 'docker build -f ./docker/Dockerfile -t hello-python:latest .'          
