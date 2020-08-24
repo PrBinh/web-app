@@ -4,9 +4,9 @@ pipeline {
        stage('Build') {
            agent any
            steps {
-				// install requirements package
-			   sh 'pip install -r requirements.txt'
-			   sh 'python main.py'
+		// install requirements package
+		sh 'pip install -r requirements.txt'
+		sh 'python main.py'
                // Build docker image file
                sh 'docker build -f Dockerfile -t hello-python:latest .'          
            }    
