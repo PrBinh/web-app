@@ -2,7 +2,10 @@ pipeline {
    agent any
    stages {
        stage('Build') {
-           agent any
+           agent {
+               docker {
+                   image 'python:3.6'
+               }
            steps {
 		// install requirements package
 		sh 'pip install -r requirements.txt'
@@ -12,7 +15,10 @@ pipeline {
            }    
        }
        stage('Test') {
-           agent any
+           agent {
+               docker {
+                   image 'python:3.6'
+               }
            steps {                
                // Run docker with image
                sh 'docker run -p 5001:5000 hello-python'
