@@ -9,7 +9,6 @@
   - name: Deploy the application
     k8s:
       state: present
-      src: deployment.yml
       validate_certs: no
       namespace: default
       definition: "deployment.yml"
