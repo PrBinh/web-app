@@ -1,7 +1,7 @@
 pipeline {
    agent any
    environment {
-       registry = "google-container-registry"
+       registry = "https://hub.docker.com/repository/docker/binhdocker/webapp"
        GOCACHE = "/tmp"
    }
    stages {
