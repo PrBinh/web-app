@@ -1,20 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-kubernetes
+  name: hello-deployment
+  labels:
+    role: app
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: hello-kubernetes
+      role: app
   template:
     metadata:
       labels:
-        app: hello-kubernetes
+        role: app
     spec:
       containers:
-      - name: hello-kubernetes
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        ports:
-        - containerPort: 3000
-        imagePullPolicy: Always
+      - name: app
+        image: ""
+        resources:
+          requests:
+            cpu: 10m
