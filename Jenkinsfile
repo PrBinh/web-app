@@ -1,7 +1,7 @@
 pipeline {
    agent any
    environment {
-       registry = "https://gcr.io", "gcr:google-container-registry"
+       registry = "google-container-registry"
        GOCACHE = "/tmp"
    }
    stages {
