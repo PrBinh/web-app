@@ -10,7 +10,7 @@ node{
 }
 stage('RUN Unit Tests'){
       sh "sudo yum install -y npm"
-      sh "npm init"
+      sh "sudo npm init"
       sh "npm test"
   }
   stage('Docker Build, Push'){
