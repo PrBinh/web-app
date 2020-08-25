@@ -1,28 +1,65 @@
-node{
-  def Namespace = "default"
-  def ImageName = "web-app/web-app"
-  def Creds = "2dfd9d0d-a300-49ee-aaaf-0a3efcaa5279"
-  try{
-  stage('Checkout'){
-      git 'https://github.com/PrBinh/web-app.git'
-      sh "git rev-parse --short HEAD > .git/commit-id"
-      imageTag= readFile('.git/commit-id').trim()
-}
-stage('RUN Unit Tests'){
-      sh "sudo yum install -y npm"
-      sh "sudo npm init"
-      sh "npm test"
-  }
-  stage('Docker Build, Push'){
-    withDockerRegistry([credentialsId: "${Creds}", url: 'https://index.docker.io/v1/']) {
-      sh "docker build -t ${ImageName}:${imageTag} ."
-      sh "docker push ${ImageName}"
-        }
-}
-    stage('Deploy on K8s'){
-sh "ansible-playbook /var/lib/jenkins/ansible/sayarapp-deploy/deploy.yml  --user=jenkins --extra-vars ImageName=${ImageName} --extra-vars imageTag=${imageTag} --extra-vars Namespace=${Namespace}"
-    }
-     } catch (err) {
-      currentBuild.result = 'FAILURE'
-    }
+pipeline {
+   agent any
+   environment {
+       registry = "magalixcorp/k8scicd"
+       GOCACHE = "/tmp"
+   }
+   stages {
+       stage('Build') {
+           agent {
+               docker {
+                   image 'golang'
+               }
+           }
+           steps {
+               // Create our project directory.
+               sh 'cd ${GOPATH}/src'
+               sh 'mkdir -p ${GOPATH}/src/hello-world'
+               // Copy all files in our Jenkins workspace to our project directory.               
+               sh 'cp -r ${WORKSPACE}/* ${GOPATH}/src/hello-world'
+               // Build the app.
+               sh 'go build'              
+           }    
+       }
+       stage('Test') {
+           agent {
+               docker {
+                   image 'golang'
+               }
+           }
+           steps {                
+               // Create our project directory.
+               sh 'cd ${GOPATH}/src'
+               sh 'mkdir -p ${GOPATH}/src/hello-world'
+               // Copy all files in our Jenkins workspace to our project directory.               
+               sh 'cp -r ${WORKSPACE}/* ${GOPATH}/src/hello-world'
+               // Remove cached test results.
+               sh 'go clean -cache'
+               // Run Unit Tests.
+               sh 'go test ./... -v -short'           
+           }
+       }
+       stage('Publish') {
+           environment {
+               registryCredential = 'dockerhub'
+           }
+           steps{
+               script {
+                   def appimage = docker.build registry + ":$BUILD_NUMBER"
+                   docker.withRegistry( '', registryCredential ) {
+                       appimage.push()
+                       appimage.push('latest')
+                   }
+               }
+           }
+       }
+       stage ('Deploy') {
+           steps {
+               script{
+                   def image_id = registry + ":$BUILD_NUMBER"
+                   sh "ansible-playbook  playbook.yml --extra-vars \"image_id=${image_id}\""
+               }
+           }
+       }
+   }
 }
