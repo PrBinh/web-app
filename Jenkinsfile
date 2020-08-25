@@ -1,7 +1,7 @@
 pipeline {
    agent any
    environment {
-       registry = "magalixcorp/k8scicd"
+       registry = "gcr:google-container-registry"
        GOCACHE = "/tmp"
    }
    stages {
@@ -46,7 +46,7 @@ pipeline {
            steps{
                script {
                    def appimage = docker.build registry + ":$BUILD_NUMBER"
-                   docker.withRegistry( 'https://gcr.io', 'gcr:google-container-registry', registryCredential ) {
+                   docker.withRegistry( '', registryCredential ) {
                        appimage.push()
                        appimage.push('latest')
                    }
