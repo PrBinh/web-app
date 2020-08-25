@@ -1,7 +1,7 @@
 pipeline {
    agent any
    environment {
-       registry = "gcr:google-container-registry"
+       registry = "magalixcorp/k8scicd"
        GOCACHE = "/tmp"
    }
    stages {
