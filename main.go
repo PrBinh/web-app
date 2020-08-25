@@ -4,6 +4,7 @@ package main
 import (
    "log"
    "net/http"
+   "python3"
 )
 
 type Server struct{}
@@ -15,7 +16,6 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-   cmd := exec.Command("python")
    s := &Server{}
    http.Handle("/", s)
    log.Fatal(http.ListenAndServe(":8080", nil))
