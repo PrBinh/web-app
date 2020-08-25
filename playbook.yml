@@ -4,7 +4,7 @@
     k8s:
       state: present
       src: service.yml
-      definition: ""
+      definition: "{lookup('service.yml')}"
       validate_certs: no
       namespace: default
   - name: Deploy the application
@@ -13,4 +13,4 @@
       src: deployment.yml
       validate_certs: no
       namespace: default
-      definition: ""
+      definition: "{lookup('deployment.yml')}"
