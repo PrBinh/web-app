@@ -9,7 +9,7 @@ node{
       imageTag= readFile('.git/commit-id').trim()
 }
 stage('RUN Unit Tests'){
-      sh "sudo yum install npm"
+      sh "sudo yum install -y npm"
       sh "npm test"
   }
   stage('Docker Build, Push'){
