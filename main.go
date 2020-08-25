@@ -4,7 +4,7 @@ package main
 import (
    "log"
    "net/http"
-   "python3"
+   "python"
 )
 
 type Server struct{}
