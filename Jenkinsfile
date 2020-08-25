@@ -46,7 +46,7 @@ pipeline {
            steps{
                script {
                    def appimage = docker.build registry + ":$BUILD_NUMBER"
-                   docker.withRegistry( '', registryCredential ) {
+                   docker.withRegistry( "https://gcr.io", "gcr:google-container-registry", registryCredential ) {
                        appimage.push()
                        appimage.push('latest')
                    }
