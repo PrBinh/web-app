@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "binhdocker/webapp"
+        image: "appimage"
         resources:
           requests:
             cpu: 10m
