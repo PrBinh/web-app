@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: 'appimage'
+        image: '${image_id}'
         resources:
           requests:
             cpu: 10m
